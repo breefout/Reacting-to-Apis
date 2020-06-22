@@ -1,6 +1,7 @@
 import React from 'react';
-import logo from "../ghibli-logo.png";
 import '../App.css';
+import Button from 'react-bootstrap/Button';
+import logo from "../ghibli-logo.png";
 
 
 
@@ -9,7 +10,8 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            films: []
+            films: [],  
+            loading: false
         };
     }
 
@@ -18,15 +20,28 @@ export default class App extends React.Component {
             .then(res => res.json())
             .then(arr => this.setState({ films: arr }))
     }
+
+
+
     render() {
-        return <div class="myContainer">
-            {this.state.films.map((film) => <div class="card" style={{ width: "18rem" }}>
-                <div class="card-body">
-                    <h5 class="card-title">{film['title']}</h5>
-                    <p class="card-text">{film['description']}</p>
-                </div>
-            </div>)}
-        </div>;
+        if (this.state.loading) {
+            return <div class="myContainer">
+                {this.state.films.map((film) => <div class="card" style={{ width: "18rem" }}>
+                    <div class="card-body">
+                        <h5 class="card-title">{film['title']}</h5>
+                        <p class="card-text">{film['description']}</p>
+                    </div>
+                </div>)}
+            </div>;
+
+
+        } else {
+            return <div>
+                <Button onClick={() => this.setState({loading: true})} style={{margin:'20px'}} variant="primary">Load</Button>
+            </div>
+
+        } 
+        
 
     }
 }
